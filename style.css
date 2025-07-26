@@ -1,0 +1,66 @@
+* {
+  box-sizing: border-box;
+  margin: 0; padding: 0;
+}
+html, body {
+  width: 100%;
+  height: 100%;
+  background-color: #FDE5CB;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.cover {
+  position: relative;
+  height: 100vh;
+  aspect-ratio: 9 / 16.5;
+  background-image: url('PIC/cover.jpg');
+  background-size: cover;
+  background-position: center;
+}
+#startBtn {
+  visibility: hidden;
+  position: absolute;
+  cursor: pointer;
+}
+.question-box {
+  position: absolute;
+  top: 5%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90vw;
+  max-width: 1081px;
+  display: none;
+}
+.question-img {
+  width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+.options {
+  margin-top: 2vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1vh;
+}
+.option-img {
+  width: 100%;
+  max-width: 600px;
+  height: auto;
+  cursor: pointer;
+}
+.result-box {
+  width: 100%;
+  text-align: center;
+  margin-top: 0px;
+}
+
+.result-img {
+  width: 100%;
+  height: auto;
+  max-width: 1081px; /* 限制圖片不會超過原圖寬度 */
+  display: block;
+  margin: 0 auto;
+}

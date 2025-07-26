@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>雲林影展《你適合生活在什麼動畫世界》心理測驗</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="cover" id="cover">
+    <!-- 開始按鈕 -->
+    <img src="PIC/CoverButton.png" alt="開始測驗" id="startBtn" class="start-button" onclick="startTest()">
+
+    <!-- 題目區塊 -->
+    <div class="question-box" id="questionBox">
+      <img id="questionImage" class="question-img" src="PIC/Topic1.png" alt="題目圖">
+      <div class="options" id="optionsContainer">
+        <!-- 選項圖片將由 JS 動態載入 -->
+      </div>
+    </div>
+
+    <!-- 結果區塊 -->
+    <div class="result-box" id="resultBox" style="display: none;">
+      <img id="resultImage" class="result-img" src="" alt="測驗結果">
+    </div>
+  </div>
+
+  <script src="data.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
