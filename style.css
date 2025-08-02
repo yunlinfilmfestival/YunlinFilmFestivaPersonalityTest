@@ -18,11 +18,14 @@ html, body {
   background-size: cover;
   background-position: center;
 }
+
+/* 開始按鈕 */
 #startBtn {
   visibility: hidden;
   position: absolute;
   cursor: pointer;
 }
+
 .question-box {
   position: absolute;
   top: 5%;
@@ -32,25 +35,46 @@ html, body {
   max-width: 1081px;
   display: none;
 }
+
 .question-img {
   width: 100%;
   height: auto;
   display: block;
   margin: 0 auto;
 }
+
+/* 把選項容器改成絕對定位在底部中央，並由下往上排列 */
 .options {
-  margin-top: 2vh;
+  position: absolute;
+  bottom: 5vh; /* 距離底部 5vh，視需要可調 */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90vw;
+  max-width: 1081px;
+
   display: flex;
-  flex-direction: column;
+  flex-direction: column-reverse; /* 由下往上排列 */
   align-items: center;
   gap: 1vh;
 }
+
+/* 加在你的 CSS 最後面 */
+#optionsContainer.grid-layout {
+  display: grid !important;
+  grid-template-columns: auto auto; /* 兩欄等寬，但由內容決定寬度 */
+  justify-content: center; /* 整個 grid 水平置中 */
+  column-gap: 2vw; /* <--- 你可以自訂這裡的「左右中間距」 */
+  row-gap: 2vh;
+}
+
+/* 選項圖片 */
 .option-img {
   width: 100%;
   max-width: 600px;
   height: auto;
   cursor: pointer;
 }
+
 .result-box {
   width: 100%;
   text-align: center;
