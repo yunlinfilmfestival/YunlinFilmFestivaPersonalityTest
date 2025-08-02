@@ -14,7 +14,7 @@ html, body {
   position: relative;
   height: 100vh;
   aspect-ratio: 9 / 16.5;
-  background-image: url('PIC/cover.jpg');
+  background-image: url('/PIC/cover.jpg');
   background-size: cover;
   background-position: center;
 }
@@ -88,3 +88,4 @@ html, body {
   display: block;
   margin: 0 auto;
 }
+
