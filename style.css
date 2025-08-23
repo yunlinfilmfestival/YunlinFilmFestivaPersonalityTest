@@ -6,6 +6,10 @@
 html, body {
   width: 100%;
   height: 100%;
+  overflow-x: hidden;   /* 禁止左右捲動 */
+  overflow-y: auto;     /* 允許上下捲動 */
+  touch-action: pan-y;  /* 只允許上下滑動 */
+  -ms-touch-action: pan-y;
   background-color: #FDE5CB;
   display: flex;
   justify-content: center;
