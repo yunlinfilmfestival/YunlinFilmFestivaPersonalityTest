@@ -5,6 +5,9 @@ const score = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 };
 const questionScale = 0.7; // 題目圖縮小比例
 const optionScale = 0.6;   // 選項圖縮小比例
 
+// 🚩 新增：基準寬度
+let baseCoverWidth = null;
+
 // 按鈕等比縮放
 function resizeButton() {
   const cover = document.getElementById('cover');
@@ -15,6 +18,7 @@ function resizeButton() {
   const btnRatio = btnOriginalHeight / btnOriginalWidth;
   const bgOriginalWidth = 4500;
 
+  // 按鈕依舊用 cover 寬度算（因為在 cover 裡）
   const btnWidth = cover.clientWidth * (btnOriginalWidth / bgOriginalWidth);
   const btnHeight = btnWidth * btnRatio;
 
@@ -28,53 +32,44 @@ function resizeButton() {
 // 結果圖等比縮放
 function resizeResultImage() {
   const resultImage = document.getElementById('resultImage');
-  const cover = document.getElementById('cover');
 
-  // ✅ 用 cover 的寬度作為基準
-  const newWidth = cover.clientWidth;
+  if (!baseCoverWidth) return; // 還沒載入時不處理
 
+  const newWidth = baseCoverWidth;
   resultImage.style.width = newWidth + 'px';
-  resultImage.style.height = 'auto';  // ✅ 自動維持比例
+  resultImage.style.height = 'auto';
   resultImage.style.display = 'block';
   resultImage.style.margin = '0 auto';
 }
 
-// 問題圖片等比縮放（動態讀尺寸）
+// 問題圖片等比縮放
 function resizeQuestionImage() {
   const questionImg = document.getElementById('questionImage');
-  const cover = document.getElementById('cover');
-  const coverWidth = cover.clientWidth;
+  if (!baseCoverWidth) return;
 
-  questionImg.style.width = (coverWidth * questionScale) + 'px';
+  const newWidth = baseCoverWidth * questionScale;
+  questionImg.style.width = newWidth + 'px';
   questionImg.style.height = 'auto';
 
   questionImg.onload = () => {
-    const naturalWidth = questionImg.naturalWidth;
-    const naturalHeight = questionImg.naturalHeight;
-    const ratio = naturalHeight / naturalWidth;
-    const newWidth = cover.clientWidth * questionScale;
-    questionImg.style.width = newWidth + 'px';
-    questionImg.style.height = newWidth * ratio + 'px';
+    const ratio = questionImg.naturalHeight / questionImg.naturalWidth;
+    questionImg.style.height = (newWidth * ratio) + 'px';
   };
 }
 
-// 選項圖片等比縮放（動態讀尺寸）
+// 選項圖片等比縮放
 function resizeOptionImages() {
-  const cover = document.getElementById('cover');
-  const coverWidth = cover.clientWidth;
-  const optionImgs = document.getElementsByClassName('option-img');
+  if (!baseCoverWidth) return;
 
+  const optionImgs = document.getElementsByClassName('option-img');
   for (const img of optionImgs) {
-    img.style.width = (coverWidth * optionScale) + 'px';
+    const newWidth = baseCoverWidth * optionScale;
+    img.style.width = newWidth + 'px';
     img.style.height = 'auto';
 
     img.onload = () => {
-      const naturalWidth = img.naturalWidth;
-      const naturalHeight = img.naturalHeight;
-      const ratio = naturalHeight / naturalWidth;
-      const newWidth = cover.clientWidth * optionScale;
-      img.style.width = newWidth + 'px';
-      img.style.height = newWidth * ratio + 'px';
+      const ratio = img.naturalHeight / img.naturalWidth;
+      img.style.height = (newWidth * ratio) + 'px';
     };
   }
 }
@@ -111,22 +106,19 @@ function showQuestion(index) {
     img.alt = `選項${i + 1}`;
     img.className = 'option-img';
 
-    const coverWidth = cover.clientWidth;
-    let width = coverWidth * optionScale;
+    let width = baseCoverWidth * optionScale;
     let height = 'auto';
 
     // ✅ 控制第2、3、4、6題的選項圖片寬度
     if ([1, 2, 3, 5].includes(index)) {
-      width = coverWidth * 0.4; // 小一點才能兩張並排
+      width = baseCoverWidth * 0.4; // 小一點才能兩張並排
     }
 
     img.style.width = width + 'px';
     img.style.height = height;
 
     img.onload = () => {
-      const naturalWidth = img.naturalWidth;
-      const naturalHeight = img.naturalHeight;
-      const ratio = naturalHeight / naturalWidth;
+      const ratio = img.naturalHeight / img.naturalWidth;
       img.style.height = (width * ratio) + 'px';
     };
 
@@ -156,7 +148,7 @@ function nextQuestion() {
     console.log("完成！最終分數：", score, "結果：", finalResult);
 
     document.getElementById('questionBox').style.display = 'none';
-    document.getElementById('optionsContainer').style.display = 'none';  // 新增這行，隱藏選項
+    document.getElementById('optionsContainer').style.display = 'none';
 
     const resultBox = document.getElementById('resultBox');
     const resultImage = document.getElementById('resultImage');
@@ -167,7 +159,7 @@ function nextQuestion() {
   }
 }
 
-// 初始載入時調整按鈕和結果圖片大小
+// 初始載入時調整
 window.addEventListener('load', () => {
   const cover = document.getElementById('cover');
   const startBtn = document.getElementById('startBtn');
@@ -177,16 +169,25 @@ window.addEventListener('load', () => {
   bgImg.src = bgUrl;
 
   bgImg.onload = () => {
+    // 🚩 第一次設定基準寬度
+    baseCoverWidth = cover.clientWidth;
+
     resizeButton();
     resizeResultImage();
     startBtn.style.visibility = 'visible';
   };
 });
 
-// 視窗大小改變時也調整圖片大小
+// 🚩 視窗大小改變時，只在「橫豎屏切換」時更新基準
+let lastOrientation = window.innerWidth > window.innerHeight ? 'landscape' : 'portrait';
 window.addEventListener('resize', () => {
-  resizeButton();
-  resizeQuestionImage();
-  resizeOptionImages();
-  resizeResultImage();
+  const currentOrientation = window.innerWidth > window.innerHeight ? 'landscape' : 'portrait';
+  if (currentOrientation !== lastOrientation) {
+    baseCoverWidth = document.getElementById('cover').clientWidth;
+    resizeButton();
+    resizeQuestionImage();
+    resizeOptionImages();
+    resizeResultImage();
+    lastOrientation = currentOrientation;
+  }
 });
