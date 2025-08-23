@@ -2,6 +2,7 @@
   box-sizing: border-box;
   margin: 0; padding: 0;
 }
+
 html, body {
   width: 100%;
   height: 100%;
@@ -10,9 +11,10 @@ html, body {
   justify-content: center;
   align-items: center;
 }
+
 .cover {
   position: relative;
-  height: 100vh;
+  height: var(--vh, 100vh); /* ✅ 使用 JS 設定的可視高度，預設 100vh */
   aspect-ratio: 9 / 16.5;
   background-image: url('PIC/Cover.jpg');
   background-size: cover;
@@ -58,12 +60,12 @@ html, body {
   gap: 1vh;
 }
 
-/* 加在你的 CSS 最後面 */
+/* 第2、3、4、6題用 grid 兩列 */
 #optionsContainer.grid-layout {
   display: grid !important;
-  grid-template-columns: auto auto; /* 兩欄等寬，但由內容決定寬度 */
-  justify-content: center; /* 整個 grid 水平置中 */
-  column-gap: 2vw; /* <--- 你可以自訂這裡的「左右中間距」 */
+  grid-template-columns: auto auto;
+  justify-content: center; /* grid 水平置中 */
+  column-gap: 2vw; /* 左右間距 */
   row-gap: 2vh;
 }
 
