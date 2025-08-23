@@ -30,15 +30,13 @@ function resizeResultImage() {
   const resultImage = document.getElementById('resultImage');
   const cover = document.getElementById('cover');
 
-  const originalWidth = 1081;
-  const originalHeight = 1980;
-  const ratio = originalHeight / originalWidth;
-
+  // ✅ 用 cover 的寬度作為基準
   const newWidth = cover.clientWidth;
-  const newHeight = newWidth * ratio;
 
   resultImage.style.width = newWidth + 'px';
-  resultImage.style.height = newHeight + 'px';
+  resultImage.style.height = 'auto';  // ✅ 自動維持比例
+  resultImage.style.display = 'block';
+  resultImage.style.margin = '0 auto';
 }
 
 // 問題圖片等比縮放（動態讀尺寸）
