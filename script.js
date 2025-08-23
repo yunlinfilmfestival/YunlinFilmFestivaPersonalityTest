@@ -141,9 +141,15 @@ function nextQuestion() {
 
     console.log("完成！最終分數：", score, "結果：", finalResult);
 
+    // 隱藏題目與選項
     document.getElementById('questionBox').style.display = 'none';
     document.getElementById('optionsContainer').style.display = 'none';
 
+    // 清空或改掉 cover 背景
+    const cover = document.getElementById('cover');
+    cover.style.backgroundImage = 'none'; // 或者 cover.style.backgroundImage = `url('PIC/${finalResult}.png')`;
+
+    // 顯示結果圖片
     const resultBox = document.getElementById('resultBox');
     const resultImage = document.getElementById('resultImage');
     resultImage.src = `PIC/${finalResult}.png`;
